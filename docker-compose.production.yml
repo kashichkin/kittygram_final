@@ -15,7 +15,7 @@ services:
     image: kashichkin/kittygram_backend
     env_file: .env
     volumes:
-      - static:/static/
+      - static:/app/collected_static/
       - media:/app/media/
   frontend:
     env_file: .env

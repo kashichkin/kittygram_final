@@ -13,8 +13,8 @@ jobs:
         image: postgres:13.10
         env:
           POSTGRES_USER: django_user
-          POSTGRES_PASSWORD: mysecretpassword
-          POSTGRES_DB: django
+          POSTGRES_PASSWORD: django_password
+          POSTGRES_DB: django_bd
         ports:
           - 5432:5432
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
@@ -34,12 +34,12 @@ jobs:
     - name: Test with flake8 and django tests
       env:
         POSTGRES_USER: django_user
-        POSTGRES_PASSWORD: mysecretpassword
-        POSTGRES_DB: django
+        POSTGRES_PASSWORD: django_password
+        POSTGRES_DB: django_db
+        SECRET_KEY: testkey
         DB_HOST: 127.0.0.1
         DB_PORT: 5432
       run: |
-        export SECRET_KEY=${{ secrets.SECRET_KEY }}
         python -m flake8
         cd backend/
         python manage.py test
@@ -141,8 +141,8 @@ jobs:
         username: ${{ secrets.USER }}
         key: ${{ secrets.SSH_KEY }}
         passphrase: ${{ secrets.SSH_PASSPHRASE }}
-        source: "docker-compose.production.yml"
-        target: "kittygram_final"
+        source: "docker-compose.production.yml,nginx/nginx.conf"
+        target: "kittygram"
     - name: Executing remote ssh commands to deploy
       uses: appleboy/ssh-action@master
       with:
