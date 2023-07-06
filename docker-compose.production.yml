@@ -1,33 +1,34 @@
 version: '3'
 
 volumes:
-  pg_data_kittygram:
+  pg_data:
   static:
   media:
 
 services:
-  db_kittygram:
+  db:
     image: postgres:13
-    env_file: .env
     volumes:
-      - pg_data_kittygram:/var/lib/postgres/data
-  backend:
-    image: kashichkin/kittygram_backend
+      - pg_data:/var/lib/postgresql/data
     env_file: .env
+  backend:
+    env_file: .env
+    image: helgg/kittygram_backend
+    depends_on:
+      - db
     volumes:
       - static:/app/collected_static/
-      - media:/app/media/
+      - media:/app/media
   frontend:
-    env_file: .env
-    image: kashichkin/kittygram_frontend
+    image: helgg/kittygram_frontend
     command: cp -r /app/build/. /static/
     volumes:
       - static:/static
   gateway:
-    image: kashichkin/kittygram_gateway
-    env_file: .env
+    image: nginx:1.22.1
     ports:
-      - 9090:80
+      - 9000:80
     volumes:
+      - ./nginx/:/etc/nginx/conf.d
       - static:/static
-      - media:/app/media/
+      - media:/media
