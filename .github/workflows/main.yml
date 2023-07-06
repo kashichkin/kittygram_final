@@ -36,10 +36,10 @@ jobs:
         POSTGRES_USER: django_user
         POSTGRES_PASSWORD: django_password
         POSTGRES_DB: django_db
-        SECRET_KEY: testkey
         DB_HOST: 127.0.0.1
         DB_PORT: 5432
       run: |
+        export SECRET_KEY=${{ secrets.SECRET_KEY }}
         python -m flake8
         cd backend/
         python manage.py test
