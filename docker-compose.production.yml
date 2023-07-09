@@ -16,7 +16,7 @@ services:
     image: kashichkin/kittygram_backend
     volumes:
       - static:/static/
-      - media:/app/media
+      - media:/app/media/
   frontend:
     env_file: .env
     image: kashichkin/kittygram_frontend
@@ -30,4 +30,4 @@ services:
       - 9000:80
     volumes:
       - static:/static
-      - media:/app/media
+      - media:/app/media/
