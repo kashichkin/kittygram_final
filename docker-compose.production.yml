@@ -18,17 +18,16 @@ services:
       - db
     volumes:
       - static:/static/
-      - media:/app/media
+      - media:/app/media/
   frontend:
     image: kashichkin/kittygram_frontend
     command: cp -r /app/build/. /static/
     volumes:
       - static:/static
   gateway:
-    image: nginx:1.22.1
+    image: kashichkin/kittygram_gateway
     ports:
       - 9000:80
     volumes:
-      - ./nginx/:/etc/nginx/conf.d
       - static:/static
-      - media:/media
+      - media:/app/media/
